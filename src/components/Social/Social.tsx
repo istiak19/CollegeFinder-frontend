@@ -26,13 +26,14 @@ const Social = () => {
                 photo: user.photoURL,
             };
 
-            const res = await axios.post("http://localhost:5000/user", userInfo);
+            const res = await axios.post("http://localhost:5000/api/v1/user", userInfo);
 
-            if (res.data?.insertedId || res.data?.acknowledged) {
-                toast.success("Registration successful");
+            if (res.data.success) {
+                toast.success("Registration successful!");
+                navigate("/");
+            } else {
+                toast.error("Something went wrong saving user data.");
             }
-
-            navigate("/");
         } catch (error: unknown) {
             const err = error as { message: string };
             console.error("Google Sign-In Error:", err.message);

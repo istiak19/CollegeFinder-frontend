@@ -64,8 +64,9 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
 
                     {user ? (
                         <div className="flex items-center gap-4">
-                            {/* Profile picture container */}
-                            <div
+                            {/* Profile picture with Link to Profile Page */}
+                            <Link
+                                to="/profile"
                                 className="relative"
                                 onMouseEnter={() => setShowName(true)}
                                 onMouseLeave={() => setShowName(false)}
@@ -89,7 +90,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
                                         {user.displayName || user.email}
                                     </div>
                                 )}
-                            </div>
+                            </Link>
 
                             <button
                                 onClick={handleLogOut}

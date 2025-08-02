@@ -53,14 +53,12 @@ const Register = () => {
                 name: data.name,
                 email: data.email,
                 phone: data.phone,
+                password: data.password,
                 photo: imageUrl,
-                role: "student",
             };
-            console.log(userData)
+            const res = await axios.post("http://localhost:5000/api/v1/user", userData);
 
-            const res = await axios.post("http://localhost:5000/user", userData);
-
-            if (res.data.insertedId || res.data.acknowledged) {
+            if (res.data.success) {
                 toast.success("Registration successful!");
                 reset();
                 navigate("/");
