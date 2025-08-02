@@ -64,26 +64,17 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
 
                     {user ? (
                         <div className="flex items-center gap-4">
-                            {/* Profile picture with Link to Profile Page */}
+                            {/* Name instead of profile picture with Link to Profile Page */}
                             <Link
                                 to="/profile"
                                 className="relative"
                                 onMouseEnter={() => setShowName(true)}
                                 onMouseLeave={() => setShowName(false)}
                             >
-                                {user.photoURL ? (
-                                    <img
-                                        src={user.photoURL}
-                                        alt={user.displayName || "User Avatar"}
-                                        className="w-10 h-10 rounded-full object-cover cursor-pointer border border-gray-300"
-                                    />
-                                ) : (
-                                    <div className="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white cursor-pointer border border-gray-300 select-none">
-                                        {user.displayName
-                                            ? user.displayName.charAt(0).toUpperCase()
-                                            : user.email?.charAt(0).toUpperCase() || "U"}
-                                    </div>
-                                )}
+                                <div className="text-sm font-medium text-gray-800 cursor-pointer">
+                                    {/* Display the user's name */}
+                                    {user.displayName || user.email}
+                                </div>
 
                                 {showName && (
                                     <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max bg-gray-900 text-white text-xs rounded py-1 px-3 whitespace-nowrap z-50 shadow-lg">
