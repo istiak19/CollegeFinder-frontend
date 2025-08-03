@@ -5,8 +5,11 @@ import NotFound from "../pages/NotFound/NotFound";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import PrivateAdmissionForm from "../components/PrivatePage/PrivateAdmissionForm";
-import Profile from "../pages/Profile/Profile";
 import PasswordReset from "../pages/PasswordReset";
+import Colleges from "../pages/Colleges/Colleges";
+import PrivateCollegeDetails from "../components/PrivatePage/PrivateCollegeDetails";
+import AdmissionPage from "../pages/AdmissionPage/AdmissionPage";
+import PrivateProfile from "../components/PrivatePage/PrivateProfile";
 
 const router = createBrowserRouter([
     {
@@ -18,7 +21,11 @@ const router = createBrowserRouter([
                 Component: Home,
             },
             {
-                path: "/admission",
+                path: "/admission/",
+                Component: AdmissionPage,
+            },
+            {
+                path: "/admission/:id",
                 Component: PrivateAdmissionForm,
             },
             {
@@ -31,11 +38,19 @@ const router = createBrowserRouter([
             },
             {
                 path: "/profile",
-                Component: Profile,
+                Component: PrivateProfile,
             },
             {
                 path: "/forgot-password",
                 Component: PasswordReset,
+            },
+            {
+                path: "/colleges",
+                Component: Colleges,
+            },
+            {
+                path: "/colleges/:id",
+                Component: PrivateCollegeDetails,
             },
             {
                 path: "*",

@@ -1,9 +1,9 @@
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-// Zod schema
 const admissionSchema = z.object({
     candidateName: z.string().min(2, "Name is required"),
     subject: z.string().min(2, "Subject is required"),
@@ -20,18 +20,30 @@ const admissionSchema = z.object({
 
 type AdmissionFormData = z.infer<typeof admissionSchema>;
 
-export default function AdmissionForm() {
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm<AdmissionFormData>({
-        resolver: zodResolver(admissionSchema),
-    });
+const AdmissionForm = () => {
+    const { id } = useParams<{ id: string }>();
 
+    const [collegeName, setCollegeName] = useState<string>("");
     const [submitted, setSubmitted] = useState<AdmissionFormData | null>(null);
     const [imageURL, setImageURL] = useState<string | null>(null);
+
+    useEffect(() => {
+        const colleges = [
+            { id: "1", name: "University of Dhaka" },
+            { id: "2", name: "Bangladesh University of Engineering and Technology (BUET)" },
+            { id: "3", name: "North South University (NSU)" },
+            { id: "4", name: "BRAC University" },
+            { id: "5", name: "Jahangirnagar University" },
+            { id: "6", name: "Rajshahi University" }
+        ];
+
+        const selectedCollege = colleges.find(college => college.id === id);
+        if (selectedCollege) setCollegeName(selectedCollege.name);
+    }, [id]);
+
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<AdmissionFormData>({
+        resolver: zodResolver(admissionSchema),
+    });
 
     const onSubmit = (data: AdmissionFormData) => {
         const file = data.image[0];
@@ -53,85 +65,58 @@ export default function AdmissionForm() {
         <section className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4 py-10">
             <div className="w-full max-w-3xl p-8 bg-white shadow-2xl rounded-xl">
                 <h2 className="text-3xl font-bold text-center text-blue-600 mb-8">
-                    College Admission Form
+                    Admission Form for {collegeName}
                 </h2>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Candidate Name */}
                     <div>
                         <label className="block font-medium mb-1">Candidate Name</label>
                         <input {...register("candidateName")} className="input" />
-                        {typeof errors.candidateName?.message === "string" && (
-                            <p className="error">{errors.candidateName.message}</p>
-                        )}
+                        {errors.candidateName && <p className="error">{errors.candidateName.message}</p>}
                     </div>
 
-                    {/* Subject */}
                     <div>
                         <label className="block font-medium mb-1">Subject</label>
                         <input {...register("subject")} className="input" />
-                        {typeof errors.subject?.message === "string" && (
-                            <p className="error">{errors.subject.message}</p>
-                        )}
+                        {errors.subject && <p className="error">{errors.subject.message}</p>}
                     </div>
 
-                    {/* Email */}
                     <div>
                         <label className="block font-medium mb-1">Email</label>
                         <input type="email" {...register("email")} className="input" />
-                        {typeof errors.email?.message === "string" && (
-                            <p className="error">{errors.email.message}</p>
-                        )}
+                        {errors.email && <p className="error">{errors.email.message}</p>}
                     </div>
 
-                    {/* Phone */}
                     <div>
                         <label className="block font-medium mb-1">Phone Number</label>
                         <input type="tel" {...register("phone")} className="input" />
-                        {typeof errors.phone?.message === "string" && (
-                            <p className="error">{errors.phone.message}</p>
-                        )}
+                        {errors.phone && <p className="error">{errors.phone.message}</p>}
                     </div>
 
-                    {/* Address */}
                     <div className="md:col-span-2">
                         <label className="block font-medium mb-1">Address</label>
                         <textarea {...register("address")} className="input" rows={2} />
-                        {typeof errors.address?.message === "string" && (
-                            <p className="error">{errors.address.message}</p>
-                        )}
+                        {errors.address && <p className="error">{errors.address.message}</p>}
                     </div>
 
-                    {/* DOB */}
                     <div>
                         <label className="block font-medium mb-1">Date of Birth</label>
                         <input type="date" {...register("dob")} className="input" />
-                        {typeof errors.dob?.message === "string" && (
-                            <p className="error">{errors.dob.message}</p>
-                        )}
+                        {errors.dob && <p className="error">{errors.dob.message}</p>}
                     </div>
 
-                    {/* Image Upload */}
                     <div>
                         <label className="block font-medium mb-1">Image Upload</label>
                         <input type="file" accept="image/*" {...register("image")} className="input" />
-                        {typeof errors.image?.message === "string" && (
-                            <p className="error">{errors.image.message}</p>
-                        )}
                     </div>
 
-                    {/* Submit Button */}
                     <div className="md:col-span-2 mt-2">
-                        <button
-                            type="submit"
-                            className="w-full py-3 text-lg bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow transition"
-                        >
+                        <button type="submit" className="w-full py-3 text-lg bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow transition">
                             Submit Admission
                         </button>
                     </div>
                 </form>
 
-                {/* Submitted Preview */}
                 {submitted && (
                     <div className="mt-8 bg-gray-100 p-4 rounded-md shadow-inner">
                         <h3 className="text-lg font-semibold mb-3 text-gray-700">Submitted Data</h3>
@@ -155,4 +140,6 @@ export default function AdmissionForm() {
             </div>
         </section>
     );
-}
+};
+
+export default AdmissionForm;
