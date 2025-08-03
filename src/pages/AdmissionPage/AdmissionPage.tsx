@@ -7,7 +7,7 @@ const AdmissionPage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/v1/colleges")
+        fetch("https://college-finder-alpha.vercel.app/api/v1/colleges")
             .then((res) => res.json())
             .then((data) => {
                 setColleges(data?.data);
@@ -31,7 +31,7 @@ const AdmissionPage = () => {
         <section className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4 py-10">
             <div className="w-full max-w-3xl p-8 bg-white shadow-2xl rounded-xl">
                 <h2 className="text-3xl font-bold text-center text-blue-600 mb-8">
-                    Choose a College for Admission
+                    Choose a University for Admission
                 </h2>
 
                 <div className="space-y-4">

@@ -3,9 +3,11 @@ import useAuth from "../../hook/useAuth";
 import axios from "axios";
 import { toast } from "react-toastify";
 import type { IAdmission } from "../../types/interface";
+import { useNavigate } from "react-router";
 
 const MyCollegePage = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [admissions, setAdmissions] = useState<IAdmission[]>([]);
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState("");
@@ -13,7 +15,7 @@ const MyCollegePage = () => {
         if (!user?.email) return;
 
         axios
-            .get(`http://localhost:5000/api/v1/admission/${user.email}`)
+            .get(`https://college-finder-alpha.vercel.app/api/v1/admission/${user.email}`)
             .then((res) => setAdmissions(res.data.data))
             .catch((err) => console.error("Failed to fetch admission:", err));
     }, [user?.email]);
@@ -23,7 +25,7 @@ const MyCollegePage = () => {
 
         try {
             const response = await axios.put(
-                `http://localhost:5000/api/v1/admission/${user.email}`,
+                `https://college-finder-alpha.vercel.app/api/v1/admission/${user.email}`,
                 { rating, comment }
             );
 
@@ -41,6 +43,7 @@ const MyCollegePage = () => {
                             : admission
                     )
                 );
+                navigate("/");
             }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
@@ -52,7 +55,7 @@ const MyCollegePage = () => {
     return (
         <div className="max-w-5xl mx-auto px-4 py-10">
             <div className="bg-white shadow-lg rounded-xl p-6 sm:p-10">
-                <h2 className="text-3xl font-bold mb-6 text-center text-blue-500">My College</h2>
+                <h2 className="text-3xl font-bold mb-6 text-center text-blue-500">My University</h2>
 
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-10">
                     {admissions.map((admission) => (

@@ -9,7 +9,7 @@ const CollegeDetails = () => {
     useEffect(() => {
         if (!id) return;
 
-        fetch(`http://localhost:5000/api/v1/colleges/${id}`)
+        fetch(`https://college-finder-alpha.vercel.app/api/v1/colleges/${id}`)
             .then((res) => res.json())
             .then((data) => {
                 setCollege(data.data);

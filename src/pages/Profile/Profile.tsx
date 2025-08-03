@@ -23,7 +23,7 @@ const Profile = () => {
         const fetchUserData = async () => {
             try {
                 const res = await axios.get<IUserResponse>(
-                    `http://localhost:5000/api/v1/user/${authUser.email}`
+                    `https://college-finder-alpha.vercel.app/api/v1/user/${authUser.email}`
                 );
                 setUserData(res.data?.data);
                 setFormData(res.data?.data);
@@ -61,7 +61,7 @@ const Profile = () => {
 
         try {
             const res = await axios.put<IUserResponse>(
-                `http://localhost:5000/api/v1/user/${authUser.email}`,
+                `https://college-finder-alpha.vercel.app/api/v1/user/${authUser.email}`,
                 formData
             );
             setUserData(res.data?.data);

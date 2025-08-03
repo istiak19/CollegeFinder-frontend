@@ -16,7 +16,7 @@ const ReviewsSection = () => {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/v1/review');
+                const response = await axios.get('https://college-finder-alpha.vercel.app/api/v1/review');
                 if (response.data.success) {
                     setReviews(response.data.data);
                 } else {
@@ -36,9 +36,9 @@ const ReviewsSection = () => {
         const stars = [];
 
         for (let i = 0; i < fullStars; i++) {
-            stars.push(<span key={`full-${i}`}>&#9733;</span>);
+            stars.push(<span key={`full-${i}`}>&#9733;</span>); // ★
         }
-        if (halfStar) stars.push(<span key="half">&#9734;</span>);
+        if (halfStar) stars.push(<span key="half">&#9734;</span>); // ☆
         return <span className="text-yellow-500">{stars}</span>;
     };
 
@@ -54,7 +54,11 @@ const ReviewsSection = () => {
                         className="bg-white border border-blue-100 rounded-xl shadow-md p-6 hover:shadow-xl transition duration-300"
                     >
                         <h3 className="text-xl font-semibold text-blue-700">{reviewData.candidateName}</h3>
-                        <p className="text-sm text-gray-500 italic">{reviewData.college.name}</p>
+                        {/* Display the college name or a fallback */}
+                        <p className="text-sm text-gray-500 italic">
+                            {reviewData.college?.name || 'No College Information'}
+                        </p>
+                        {/* Map through the reviews */}
                         {reviewData.reviews.map((review, idx) => (
                             <div key={idx} className="mt-2">
                                 <div className="text-lg">{renderStars(review.rating)}</div>

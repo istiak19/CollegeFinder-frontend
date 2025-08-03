@@ -26,7 +26,7 @@ const Social = () => {
                 photo: user.photoURL,
             };
 
-            const res = await axios.post("http://localhost:5000/api/v1/user", userInfo);
+            const res = await axios.post("https://college-finder-alpha.vercel.app/api/v1/user", userInfo);
 
             if (res.data.success) {
                 toast.success("Registration successful!");

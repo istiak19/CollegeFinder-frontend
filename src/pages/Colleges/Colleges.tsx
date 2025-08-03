@@ -7,7 +7,7 @@ const Colleges = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/v1/colleges")
+        fetch("https://college-finder-alpha.vercel.app/api/v1/colleges")
             .then((res) => res.json())
             .then((data) => {
                 setColleges(data?.data);

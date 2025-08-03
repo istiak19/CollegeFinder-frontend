@@ -56,7 +56,7 @@ const Register = () => {
                 password: data.password,
                 photo: imageUrl,
             };
-            const res = await axios.post("http://localhost:5000/api/v1/user", userData);
+            const res = await axios.post("https://college-finder-alpha.vercel.app/api/v1/user", userData);
 
             if (res.data.success) {
                 toast.success("Registration successful!");

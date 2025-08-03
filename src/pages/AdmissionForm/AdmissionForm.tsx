@@ -47,7 +47,7 @@ const AdmissionForm = () => {
     useEffect(() => {
         if (!id) return;
 
-        fetch(`http://localhost:5000/api/v1/colleges/${id}`)
+        fetch(`https://college-finder-alpha.vercel.app/api/v1/colleges/${id}`)
             .then((res) => res.json())
             .then((data) => setCollege(data?.data))
             .catch((err) => console.error("Failed to fetch college data", err));
@@ -75,7 +75,7 @@ const AdmissionForm = () => {
                 college: college?._id,
             };
 
-            const response = await axios.post("http://localhost:5000/api/v1/admission", submissionData);
+            const response = await axios.post("https://college-finder-alpha.vercel.app/api/v1/admission", submissionData);
             if (response.data.success) {
                 toast.success("Admission submitted successfully!");
                 reset();

@@ -3,19 +3,10 @@ import { useState } from "react";
 import useAuth from "../../hook/useAuth";
 import { toast } from "react-toastify";
 
-// interface NavbarProps {
-//     onSearch: (query: string) => void;
-// }
-
 const Navbar = () => {
     // const [query, setQuery] = useState("");
     const { user, signOutUser } = useAuth();
     const [showName, setShowName] = useState(false);
-
-    // const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
-    //     onSearch(query.trim());
-    // };
 
     const handleLogOut = () => {
         signOutUser()
@@ -34,7 +25,7 @@ const Navbar = () => {
                 {/* Left Side: Logo + Nav Links */}
                 <div className="flex flex-col md:flex-row md:items-center md:gap-6 gap-2 w-full md:w-auto">
                     <Link to="/" className="text-2xl font-bold text-blue-600 whitespace-nowrap">
-                        🎓 CollegeFinder
+                        🎓 UniversityFinder
                     </Link>
                     <div className="flex flex-wrap md:flex-nowrap gap-2 md:gap-4 text-sm font-medium text-gray-700">
                         <Link to="/" className="hover:text-blue-500 whitespace-nowrap">Home</Link>

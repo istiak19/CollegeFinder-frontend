@@ -12,7 +12,7 @@ const CollegesHome = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/v1/colleges")
+        fetch("https://college-finder-alpha.vercel.app/api/v1/colleges")
             .then((res) => res.json())
             .then((data) => setCollegeData(data.data || []))
             .catch((err) => console.error("Failed to load colleges", err));
