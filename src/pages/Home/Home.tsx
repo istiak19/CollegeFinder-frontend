@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import type { ICollege } from "../../types/interface";
+import CollegeCarousel from "../../components/CollegeCarousel";
+import CollegeGallery from "../../components/CollegeGallery/CollegeGallery";
+import ReviewsSection from "../../components/ReviewsSection/ReviewsSection";
+import FAQ from "../../components/FAQ/FAQ";
 
 const CollegesHome = () => {
     const [collegeData, setCollegeData] = useState<ICollege[]>([]);
@@ -20,7 +24,12 @@ const CollegesHome = () => {
 
     return (
         <div className="px-4 py-10 max-w-7xl mx-auto space-y-12">
-            {/* 🔍 Search Field */}
+            {/* College Carousel Section */}
+            <section>
+                <CollegeCarousel />
+            </section>
+
+            {/* Search Field */}
             <div className="text-center">
                 <input
                     type="text"
@@ -31,7 +40,7 @@ const CollegesHome = () => {
                 />
             </div>
 
-            {/* 🔍 Search Results */}
+            {/* Search Results */}
             {searchTerm && (
                 <div>
                     <h2 className="text-xl font-semibold mb-4">Search Results</h2>
@@ -60,9 +69,9 @@ const CollegesHome = () => {
                 </div>
             )}
 
-            {/* 🌟 Highlighted Colleges Section */}
+            {/* Highlighted Colleges Section */}
             <section>
-                <h2 className="text-2xl font-bold text-blue-700 mb-6 text-center">🌟 Top Colleges</h2>
+                <h2 className="text-2xl font-bold text-blue-700 mb-6 text-center">Top University</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {collegeData.slice(0, 3).map((college) => (
                         <div
@@ -90,6 +99,18 @@ const CollegesHome = () => {
                         </div>
                     ))}
                 </div>
+            </section>
+            {/* College Gallery Section */}
+            <section>
+                <CollegeGallery />
+            </section>
+            {/* Reviews Section */}
+            <section>
+                <ReviewsSection />
+            </section>
+            {/* FAQ Section */}
+            <section>
+                <FAQ />
             </section>
         </div>
     );

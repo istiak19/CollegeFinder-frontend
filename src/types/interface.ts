@@ -34,12 +34,12 @@ export interface IReview {
     rating: number;
     comment: string;
     reviewedAt: string;
-}
+};
 
 export interface IColleges {
     _id: string;
     name: string;
-}
+};
 
 export interface IAdmission {
     _id: string;
@@ -54,4 +54,4 @@ export interface IAdmission {
     createdAt: string;
     updatedAt: string;
     reviews?: IReview[];
-}
+};
