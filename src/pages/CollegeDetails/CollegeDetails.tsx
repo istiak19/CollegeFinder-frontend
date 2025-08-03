@@ -33,7 +33,7 @@ const CollegeDetails = () => {
                 <img
                     src={college.image}
                     alt={college.name}
-                    className="w-full h-64 object-cover"
+                    className="w-full h-[500px] object-cover"
                 />
             </div>
 
