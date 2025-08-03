@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { ICollege } from '../../types/interface';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import useAuth from '../../hook/useAuth';
 
 const admissionSchema = z.object({
     candidateName: z.string().min(2, "Name is required"),
@@ -21,52 +25,75 @@ const admissionSchema = z.object({
 
 type AdmissionFormData = z.infer<typeof admissionSchema>;
 
-const AdmissionForm = () => {
-    const { id } = useParams<{ id: string }>();
+const image_key = import.meta.env.VITE_IMAGE;
+const image_api = `https://api.imgbb.com/1/upload?key=${image_key}`;
 
-    const [collegeName, setCollegeName] = useState<string>("");
-    const [submitted, setSubmitted] = useState<AdmissionFormData | null>(null);
-    const [imageURL, setImageURL] = useState<string | null>(null);
+const AdmissionForm = () => {
+    const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
+    const [college, setCollege] = useState<ICollege | null>(null);
+    const { user } = useAuth();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+        setValue,
+    } = useForm<AdmissionFormData>({
+        resolver: zodResolver(admissionSchema),
+    });
 
     useEffect(() => {
         if (!id) return;
 
         fetch(`http://localhost:5000/api/v1/colleges/${id}`)
             .then((res) => res.json())
-            .then((data) => {
-                setCollegeName(data?.data?.name);
-            })
-            .catch((err) => {
-                console.error("Failed to fetch college data", err);
-                setCollegeName("Unknown College");
-            });
+            .then((data) => setCollege(data?.data))
+            .catch((err) => console.error("Failed to fetch college data", err));
     }, [id]);
+    useEffect(() => {
+        if (user?.email) {
+            setValue("email", user.email);
+        }
+    }, [user, setValue]);
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<AdmissionFormData>({
-        resolver: zodResolver(admissionSchema),
-    });
-
-    const onSubmit = (data: AdmissionFormData) => {
+    const onSubmit = async (data: AdmissionFormData) => {
         const file = data.image[0];
-        console.log("Admission Data:", {
-            ...data,
-            image: {
-                name: file.name,
-                type: file.type,
-                size: `${(file.size / 1024).toFixed(2)} KB`,
-            },
-        });
+        const formData = new FormData();
+        formData.append("image", file);
 
-        setImageURL(URL.createObjectURL(file));
-        setSubmitted(data);
-        reset();
+        try {
+            const res = await axios.post(image_api, formData);
+            const uploadedImageUrl = res.data.data.url;
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { image, ...rest } = data;
+            const submissionData = {
+                ...rest,
+                image: uploadedImageUrl,
+                college: college?._id,
+            };
+
+            const response = await axios.post("http://localhost:5000/api/v1/admission", submissionData);
+            if (response.data.success) {
+                toast.success("Admission submitted successfully!");
+                reset();
+                navigate("/my-college");
+            } else {
+                toast.error("Something went wrong saving user data.");
+            }
+        } catch (error) {
+            console.error("❌ Submission failed:", error);
+            toast.error("Image upload or submission failed.");
+        }
     };
 
     return (
         <section className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4 py-10">
             <div className="w-full max-w-3xl p-8 bg-white shadow-2xl rounded-xl">
                 <h2 className="text-3xl font-bold text-center text-blue-600 mb-8">
-                    Admission Form for {collegeName || "Loading..."}
+                    Admission Form for {college?.name || "Loading..."}
                 </h2>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -84,7 +111,13 @@ const AdmissionForm = () => {
 
                     <div>
                         <label className="block font-medium mb-1">Email</label>
-                        <input type="email" {...register("email")} className="input" />
+                        <input
+                            type="email"
+                            {...register("email")}
+                            value={user?.email || ""}
+                            readOnly
+                            className="input"
+                        />
                         {errors.email && <p className="error">{errors.email.message}</p>}
                     </div>
 
@@ -113,32 +146,11 @@ const AdmissionForm = () => {
                     </div>
 
                     <div className="md:col-span-2 mt-2">
-                        <button type="submit" className="w-full py-3 text-lg bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow transition">
+                        <button type="submit" className="w-full py-3 text-lg bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow transition cursor-pointer">
                             Submit Admission
                         </button>
                     </div>
                 </form>
-
-                {submitted && (
-                    <div className="mt-8 bg-gray-100 p-4 rounded-md shadow-inner">
-                        <h3 className="text-lg font-semibold mb-3 text-gray-700">Submitted Data</h3>
-                        <ul className="text-sm space-y-1 leading-relaxed">
-                            <li><strong>Name:</strong> {submitted.candidateName}</li>
-                            <li><strong>Subject:</strong> {submitted.subject}</li>
-                            <li><strong>Email:</strong> {submitted.email}</li>
-                            <li><strong>Phone:</strong> {submitted.phone}</li>
-                            <li><strong>Address:</strong> {submitted.address}</li>
-                            <li><strong>DOB:</strong> {submitted.dob}</li>
-                            <li><strong>Image:</strong> {submitted.image[0]?.name}</li>
-                        </ul>
-                        {imageURL && (
-                            <div className="mt-4">
-                                <p className="font-medium">Preview Image:</p>
-                                <img src={imageURL} alt="Preview" className="mt-1 w-40 rounded border" />
-                            </div>
-                        )}
-                    </div>
-                )}
             </div>
         </section>
     );
