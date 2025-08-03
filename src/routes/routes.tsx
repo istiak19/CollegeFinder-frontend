@@ -10,6 +10,7 @@ import Colleges from "../pages/Colleges/Colleges";
 import PrivateCollegeDetails from "../components/PrivatePage/PrivateCollegeDetails";
 import AdmissionPage from "../pages/AdmissionPage/AdmissionPage";
 import PrivateProfile from "../components/PrivatePage/PrivateProfile";
+import PrivateMyCollege from "../components/PrivatePage/PrivateMyCollege";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
             {
                 path: "/admission/:id",
                 Component: PrivateAdmissionForm,
+            },
+            {
+                path: "/my-college",
+                Component: PrivateMyCollege
             },
             {
                 path: "/login",

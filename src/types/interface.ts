@@ -29,3 +29,29 @@ export interface ICollege {
     sports: string[];
     description: string;
 };
+
+export interface IReview {
+    rating: number;
+    comment: string;
+    reviewedAt: string;
+}
+
+export interface IColleges {
+    _id: string;
+    name: string;
+}
+
+export interface IAdmission {
+    _id: string;
+    candidateName: string;
+    subject: string;
+    email: string;
+    phone: string;
+    address: string;
+    dob: string;
+    image: string;
+    college: IColleges;
+    createdAt: string;
+    updatedAt: string;
+    reviews?: IReview[];
+}
