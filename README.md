@@ -1,69 +1,151 @@
-# React + TypeScript + Vite
+# 🎓 UniversityFinder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A modern web application to discover, view, and book information about colleges and universities. Built with React, TypeScript, Firebase, and TailwindCSS.
 
-Currently, two official plugins are available:
+🔗 [Live Site](https://collegefinder19.netlify.app/)
+📦 [GitHub Repository](https://github.com/istiak19/CollegeFinder-frontend)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 📚 Table of Contents
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* [Introduction](#introduction)
+* [Features](#features)
+* [Tech Stack](#tech-stack)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Configuration](#configuration)
+* [Examples](#examples)
+* [Troubleshooting](#troubleshooting)
+* [Contributors](#contributors)
+* [License](#license)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## 🧠 Introduction
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**UniversityFinder** is a dynamic college booking and discovery platform. It helps students browse available colleges, explore their features, and submit applications — all in one streamlined interface. Built with performance, responsiveness, and accessibility in mind.
+
+---
+
+## ✨ Features
+
+* 🔍 Browse a list of colleges with filtering options
+* 📝 College application submission form with validation
+* 📸 Image galleries for each university
+* 🔔 Real-time notifications via `react-toastify`
+* 🔥 Firebase-based backend integration
+* 🎨 Modern UI with TailwindCSS & Framer Motion animations
+* 📦 Fully type-safe with Zod and TypeScript
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* **React 19**
+* **TypeScript**
+* **TailwindCSS**
+* **Vite** (for blazing fast builds and development)
+* **React Router v7**
+* **React Hook Form** + **Zod** for form handling and validation
+* **React Query** for data fetching and caching
+* **Framer Motion** for animations
+* **Swiper** for image carousels
+
+### Backend & Hosting
+
+* **Firebase** (authentication, Firestore, etc.)
+* **Netlify** (deployment)
+
+### Tooling
+
+* **ESLint** for linting
+* **Prettier** recommended for formatting
+* **TypeScript ESLint Plugin**
+* **Vite Plugin React**
+
+---
+
+## 📦 Installation
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/istiak19/CollegeFinder-frontend.git
+cd CollegeFinder-frontend
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🚀 Usage
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Start Development Server
+
+```bash
+npm run dev
 ```
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+### Lint the Codebase
+
+```bash
+npm run lint
+```
+
+---
+
+## ⚙️ Configuration
+
+To use Firebase and other environment-based features, create a `.env` file in the root:
+
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+> Replace placeholders with your actual Firebase credentials.
+
+---
+
+## 💡 Examples
+
+* View colleges list: `/colleges`
+* Submit an application: `/apply/:collegeId`
+* Authenticated user dashboard (requires login)
+
+---
+
+## 🛠️ Troubleshooting
+
+* **Firebase not working?**
+
+  * Double-check your `.env` setup.
+  * Make sure Firebase services are enabled in the console.
+
+* **Styling not applied?**
+
+  * Ensure Tailwind is properly configured and postcss plugins are installed.
+
+---
+
+## 👨‍💻 Contributors
+
+* [istiak19](https://github.com/istiak19) – Creator & Maintainer
