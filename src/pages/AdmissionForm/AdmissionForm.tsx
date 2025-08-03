@@ -14,8 +14,9 @@ const admissionSchema = z.object({
         message: "DOB must be in the past",
     }),
     image: z
-        .any()
-        .refine((file) => file?.length === 1, { message: "Image is required" }),
+        .custom<FileList>((val) => val instanceof FileList && val.length === 1, {
+            message: "Image is required",
+        }),
 });
 
 type AdmissionFormData = z.infer<typeof admissionSchema>;
@@ -28,17 +29,17 @@ const AdmissionForm = () => {
     const [imageURL, setImageURL] = useState<string | null>(null);
 
     useEffect(() => {
-        const colleges = [
-            { id: "1", name: "University of Dhaka" },
-            { id: "2", name: "Bangladesh University of Engineering and Technology (BUET)" },
-            { id: "3", name: "North South University (NSU)" },
-            { id: "4", name: "BRAC University" },
-            { id: "5", name: "Jahangirnagar University" },
-            { id: "6", name: "Rajshahi University" }
-        ];
+        if (!id) return;
 
-        const selectedCollege = colleges.find(college => college.id === id);
-        if (selectedCollege) setCollegeName(selectedCollege.name);
+        fetch(`http://localhost:5000/api/v1/colleges/${id}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setCollegeName(data?.data?.name);
+            })
+            .catch((err) => {
+                console.error("Failed to fetch college data", err);
+                setCollegeName("Unknown College");
+            });
     }, [id]);
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<AdmissionFormData>({
@@ -65,7 +66,7 @@ const AdmissionForm = () => {
         <section className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4 py-10">
             <div className="w-full max-w-3xl p-8 bg-white shadow-2xl rounded-xl">
                 <h2 className="text-3xl font-bold text-center text-blue-600 mb-8">
-                    Admission Form for {collegeName}
+                    Admission Form for {collegeName || "Loading..."}
                 </h2>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -108,6 +109,7 @@ const AdmissionForm = () => {
                     <div>
                         <label className="block font-medium mb-1">Image Upload</label>
                         <input type="file" accept="image/*" {...register("image")} className="input" />
+                        {errors.image && <p className="error">{errors.image.message}</p>}
                     </div>
 
                     <div className="md:col-span-2 mt-2">
